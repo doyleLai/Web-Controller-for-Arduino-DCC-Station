@@ -1,6 +1,6 @@
 import signal
 # import socket programming library
-import socketserver
+import socketwrapper
 
 # Things to implememt:
 #	Message factory
@@ -20,7 +20,7 @@ def main():
 	signal.signal(signal.SIGTERM, signal_handler)
 	signal.signal(signal.SIGINT, signal_handler)
 
-	ss = socketserver.Socketserver()
+	ss = socketwrapper.Socket("", 12345)
 
 	# a forever loop until client wants to exit
 	try:

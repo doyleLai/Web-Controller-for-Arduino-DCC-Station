@@ -21,16 +21,16 @@ class SafeThread(threading.Thread):
 				self.execute(*self.args)
 			print("Thread exiting")
 
-class Socketserver():
+class Socket():
 	new_connection_thread:threading.Thread = None
 	threadslist:list[SafeThread] = []
 
-	def __init__(self):
-		host = ""
+	def __init__(self, host:str, port:int):
+		#host = ""
 		# reverse a port on your computer
 		# in our case it is 12345 but it
 		# can be anything
-		port = 12345
+		#port = 12345
 		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		s.bind((host, port))
 		print("socket binded to port", port)
