@@ -1,9 +1,12 @@
 import signal
-import socket
+
+from sqlalchemy import true
+#import socket
 # import socket programming library
-import socketwrapper
+#import socketwrapper
 import serialwrapper
 import messagebuilder
+from websocket_server import WebsocketServer
 
 # Things to implememt:
 #	Message factory
@@ -24,10 +27,13 @@ def main():
 	signal.signal(signal.SIGTERM, signal_handler)
 	signal.signal(signal.SIGINT, signal_handler)
 
-	ss:socketwrapper.Socket
+	ws:WebsocketServer
+	#ss:socketwrapper.Socket
 	com:serialwrapper.Serial
 
-	def socketread(client:socket.socket, read:str) -> bool:
+	def socketread(client, server, read) -> None:
+		print(read)
+		ws.send_message(client, "ok")
 		commendparts = read.strip().split(" ")
 		msg = ""
 		if commendparts[0] == 'S':
@@ -37,10 +43,11 @@ def main():
 		print(msg)
 		com.bufferwrite.put(msg)
 
-
-	ss = socketwrapper.Socket("", 12345, callback_read = socketread)
+	ws= WebsocketServer(host='127.0.0.1', port=12345)
+	ws.set_fn_message_received(socketread)
+	#ss = socketwrapper.Socket("", 12345, callback_read = socketread)
 	com = serialwrapper.Serial("COM10", 9600)
-
+	ws.run_forever(true)
 	# a forever loop until client wants to exit
 	try:
 		while True:

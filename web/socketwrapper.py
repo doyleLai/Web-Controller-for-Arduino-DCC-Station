@@ -75,7 +75,9 @@ class Socket():
 				# reverse the given string from client
 		
 				# send back reversed string to client
-				self.callback_read(c, data.decode('ascii'))
+				s = data.decode('ascii')
+				print(s)
+				self.callback_read(c, s)
 				#response = "ok" if self.callback_read(c, data.decode('ascii')) else "error"
 			except ConnectionResetError as e:
 				break
