@@ -1,3 +1,5 @@
+import DCC.loco
+
 def speedcontrol(addr: int, dir: int, speed:int) -> str:
     if addr < 10 and dir < 3 and speed < 128:
         return f'<S{addr}{dir}{speed:03}>'
