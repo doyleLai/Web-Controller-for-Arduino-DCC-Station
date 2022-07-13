@@ -15,9 +15,9 @@ The socket server store the status of locos and broadcast the status to all clie
 Messages are formated in JSON. 
 |Type    |Example| 
 |--------|-------|
-|getLocos|{"type": "getLocos", "data": [{"address":3, "direction": 1, "speed": 0, "functions":[1,0,0,0,...]}, ...]}|
+|getLocos|{"type": "getLocos", "data": {}}|
 |addLoco |{"type": "addLoco", "data": {"address":3}}                                                               |
 |c_speed |{"type": "c_speed", "data": {"address":3, "direction": 0, "speed": 127}}                                 |
-|c_fun   |{"type": "c_speed", "data": {"address":3, "function": 10, "isOn": true}}                                 |
+|c_fun   |{"type": "c_fun", "data": {"address":3, "function": 10, "isOn": true}}                                   |
 |loco    |{"type": "loco", "data": {"address":3, "direction": 1, "speed": 0, "functions":[1,0,0,0,...]}}           |
-|locos   |{"type": "locos", "data": [{"address":3, "direction": 1, "speed": 0, "functions":[1,0,0,0,...]}, ...]}     |
+|locos   |{"type": "locos", "data": [{"address":3, "direction": 1, "speed": 0, "functions":[1,0,0,0,...]}, ...]}   |
