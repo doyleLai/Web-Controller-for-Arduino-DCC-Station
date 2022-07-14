@@ -1,0 +1,22 @@
+<div class="locoControlContainer" *ngIf="loco">
+    <div class="addressText">0x{{loco.address | number:'2.0-0'}}</div>
+    <div class="directionControlContainer">
+        <label for="dir{{loco.address}}">Direction</label>
+        <input id="dir{{loco.address}}"
+        type="checkbox" [(ngModel)]="loco.dir" min="0" max="1"
+        (change)="speedOnChanged(loco.address, loco.dir, loco.speed)"> 
+        <output>{{loco.dir? "Up":"Dn"}}</output>
+    </div>
+    <div class="speedControlContainer">
+        <label >Speed</label>
+        <input type="range" [(ngModel)]="loco.speed" min="0" max="127"
+        (change)="speedOnChanged(loco.address, loco.dir, loco.speed)">
+        <output>{{loco.speed}}</output>
+    </div>
+    <ul class="locoFunctionControlContainer">
+        <li *ngFor="let func of loco.func" 
+        [class.isFuncOn]="func.isOn === true"
+        (click) = "functionOnChanged(loco.address, func.index, func.isOn)"
+        >{{func.index | number:'2.0-0'}}</li>
+    </ul>
+</div>

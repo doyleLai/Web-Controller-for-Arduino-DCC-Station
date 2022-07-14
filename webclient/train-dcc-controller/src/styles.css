@@ -1,0 +1,14 @@
+/* You can add global styles to this file, and also import other style files */
+
+body{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h2{
+    font-size: 46px;
+    font-weight: 300;
+}
+
+.pageConainer{
+    margin: 0px 50px;
+}
