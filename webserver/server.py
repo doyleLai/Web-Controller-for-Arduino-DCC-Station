@@ -137,14 +137,15 @@ def main(host:str = "127.0.0.1", port:int = 12345, serialport:str = "COM10"):
 	print(f'Websocket listening on {host}:{port}')
 	ws.run_forever(true)
 	# a forever loop until client wants to exit
+
+	# add a default loco to the system when start 
+	_loco = loco.Loco(3)
+	locoController.add(_loco)
+	print(f'Added a Loco with address {_loco.address}')
+	com.bufferwrite.put(messagebuilder.speedcontrol_loco(_loco))
+
 	try:
 		while True:
-			# add a default loco to the system when start 
-			_loco = loco.Loco(3)
-			locoController.add(_loco)
-			print(f'Added a Loco with address {_loco.address}')
-			com.bufferwrite.put(messagebuilder.speedcontrol_loco(_loco))
-
 			line = input("> ")
 			com.bufferwrite.put(line)
 	except ProgramInterrupted:

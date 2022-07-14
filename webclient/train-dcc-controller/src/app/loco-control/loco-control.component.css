@@ -72,6 +72,11 @@ ul.locoFunctionControlContainer li{
     margin-right: 10px;
     padding: 0px;
     font-size: 15px;
+    cursor: pointer;
+}
+
+ul.locoFunctionControlContainer li:hover{
+    background-color:rgb(170, 170, 170);
 }
 
 ul.locoFunctionControlContainer li:first-child{
@@ -79,5 +84,9 @@ ul.locoFunctionControlContainer li:first-child{
 }
 
 ul.locoFunctionControlContainer li.isFuncOn{
-    background-color:rgba(48, 179, 221, 255);
+    background-color:rgb(48, 179, 221);
+}
+
+ul.locoFunctionControlContainer li.isFuncOn:hover{
+    background-color:rgb(96, 215, 255);
 }

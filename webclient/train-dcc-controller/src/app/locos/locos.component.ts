@@ -13,7 +13,7 @@ export class LocosComponent implements OnInit {
   constructor(private locoService: LocoService) { }
 
   ngOnInit(): void {
-    this.locos = this.locoService.getLocos()
+    //this.locos = this.locoService.getLocos()
 
     this.locoService.connect('ws://127.0.0.1:12345').subscribe(msg => {
       let _obj = JSON.parse(msg.data);
