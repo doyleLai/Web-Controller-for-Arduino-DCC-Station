@@ -8,13 +8,18 @@ import { LOCOS } from './locos-mock';
   providedIn: 'root'
 })
 export class LocoService {
-  private webSocket: WebSocketSubject<any> | undefined;
+  private webSocket!: WebSocketSubject<any>;
 
   getLocos(): Loco[]{
     return LOCOS;
   }
 
   constructor() {
+    this.connect(`ws://${window.location.hostname}:12345`);
+  }
+  
+  getWebsocket():WebSocketSubject<any>{
+    return this.webSocket;
   }
 
   connect(url:string): Observable<any> {

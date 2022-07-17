@@ -25,12 +25,17 @@ export class LocoControlComponent implements OnInit {
   }
 
   asm_message_c_fun(address:number, index:number, isOn:boolean):string{
-    return `{"type": "c_fun", "data": {"address":${address}, "function": ${index}, "isOn": ${isOn}}}`
+    return this.asm_websocket_message("c_fun", {"address":address, "function": index, "isOn": isOn});
+    //return `{"type": "c_fun", "data": {"address":${address}, "function": ${index}, "isOn": ${isOn}}}`
   }
 
   asm_message_c_speed(address:number, direction:boolean, speed:number):string{
-    return `{"type": "c_speed", "data": {"address":${address}, "direction":${direction}, "speed":${speed}}}`
+    return this.asm_websocket_message("c_speed", {"address":address, "direction": direction, "speed": speed});
+    //return `{"type": "c_speed", "data": {"address":${address}, "direction":${direction}, "speed":${speed}}}`
   }
 
+  asm_websocket_message(type:string, data:object): string{
+    return JSON.stringify({"type": type, "data": data})
 
+  }
 }

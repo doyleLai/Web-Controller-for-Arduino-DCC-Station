@@ -15,4 +15,4 @@ def handle(client, server, msg:str) -> None:
     except json.decoder.JSONDecodeError as e:
         print("Message does not look like a JSON string.", e)
     except ValueError as e:
-        print("Some values in the message are in incorrect format.", e)
+        print("Some values in the message are not in correct format.", e)

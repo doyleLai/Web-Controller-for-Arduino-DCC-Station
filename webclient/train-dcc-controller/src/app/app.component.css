@@ -1,0 +1,10 @@
+.headBarContainer{
+    position: relative;
+}
+
+.connectionStatus{
+    position: absolute;
+    top: 0px;
+    left: 940px;
+    line-height: 60px;
+}

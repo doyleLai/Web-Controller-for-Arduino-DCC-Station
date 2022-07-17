@@ -1,8 +1,6 @@
-from audioop import add
+import sys
 import json
 import signal
-
-from sqlalchemy import true
 #import socket
 # import socket programming library
 #import socketwrapper
@@ -45,7 +43,7 @@ def signal_handler(signum, frame):
 	raise ProgramInterrupted
 
 
-def main(host:str = "127.0.0.1", port:int = 12345, serialport:str = "COM10"):
+def main(host:str = "", port:int = 12345, serialport:str = "COM9"):
 	print("Service started")
 	
 	locoController = LocosController()
@@ -135,11 +133,16 @@ def main(host:str = "127.0.0.1", port:int = 12345, serialport:str = "COM10"):
 	#ss = socketwrapper.Socket("", 12345, callback_read = socketread)
 	com = serialwrapper.Serial(serialport, 9600)
 	print(f'Websocket listening on {host}:{port}')
-	ws.run_forever(true)
+	ws.run_forever(True)
 	# a forever loop until client wants to exit
 
 	# add a default loco to the system when start 
 	_loco = loco.Loco(3)
+	locoController.add(_loco)
+	print(f'Added a Loco with address {_loco.address}')
+	com.bufferwrite.put(messagebuilder.speedcontrol_loco(_loco))
+
+	_loco = loco.Loco(6)
 	locoController.add(_loco)
 	print(f'Added a Loco with address {_loco.address}')
 	com.bufferwrite.put(messagebuilder.speedcontrol_loco(_loco))
@@ -155,4 +158,13 @@ def main(host:str = "127.0.0.1", port:int = 12345, serialport:str = "COM10"):
 	#s.close()
  
 if __name__ == '__main__':
-	main()
+	if len(sys.argv) == 2:
+		main(serialport = sys.argv[1])
+	elif len(sys.argv) == 3:
+		main(serialport = sys.argv[1], port=int(sys.argv[2]))
+	else:
+		print((f'{sys.argv[0]}: Serial port should be given. Websocket port can be given\n'
+			f'Example:\n'
+			f'{sys.argv[0]} COM10 12345\n'
+			f'If no websocket port is given, default value port number 12345 will be used.'
+		) ,file=sys.stderr)

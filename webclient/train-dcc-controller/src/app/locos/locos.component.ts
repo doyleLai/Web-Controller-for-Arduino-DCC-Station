@@ -14,8 +14,9 @@ export class LocosComponent implements OnInit {
 
   ngOnInit(): void {
     //this.locos = this.locoService.getLocos()
-
-    this.locoService.connect('ws://127.0.0.1:12345').subscribe(msg => {
+    //.connect(`ws://${window.location.hostname}:12345`)
+  
+    this.locoService.getWebsocket().subscribe(msg => {
       let _obj = JSON.parse(msg.data);
       if (_obj.type == "locos"){
         let _locos: Loco[] = [];
@@ -29,6 +30,7 @@ export class LocosComponent implements OnInit {
         this.updateExistLoco(this.jsonToType(locoData));
       }
     });
+  
 
     this.locoService.send(JSON.stringify({"type": "getLocos", "data": {}}
     ))
