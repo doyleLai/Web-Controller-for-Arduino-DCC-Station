@@ -1,7 +1,8 @@
 <div class="pageConainer">
     <div class="headBarContainer">
         <h2>DCC Command Panel</h2>
-        <div class="connectionStatus">{{websocketIsConnected? "Connected":"No Connection"}}</div>
+
+        <div class="connectionStatus"><button (click)="reloadPage()">Reload</button>{{websocketIsConnected? "Connected":"No Connection"}}</div>
     </div>
     <app-locos></app-locos>
 </div>

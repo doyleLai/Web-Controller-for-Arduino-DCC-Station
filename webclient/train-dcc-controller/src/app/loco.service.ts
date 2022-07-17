@@ -7,33 +7,35 @@ import { LOCOS } from './locos-mock';
 @Injectable({
   providedIn: 'root'
 })
+
 export class LocoService {
   private webSocket!: WebSocketSubject<any>;
+  private URL:string = `ws://${window.location.hostname}:12345`;
 
   getLocos(): Loco[]{
     return LOCOS;
   }
 
   constructor() {
-    this.connect(`ws://${window.location.hostname}:12345`);
+    this.connect();
   }
   
   getWebsocket():WebSocketSubject<any>{
     return this.webSocket;
   }
 
-  connect(url:string): Observable<any> {
+  connect(): Observable<any> {
     if (!this.webSocket || this.webSocket.closed) {
       console.log("connect");
       this.webSocket = webSocket({
-        url:url,
+        url:this.URL,
         deserializer: msg => msg,
         serializer: msg => msg.toString()
       });
       this.webSocket.subscribe(
         {
           next: (v) =>  console.log(v.data),
-          error: (e) => console.error(e),
+          error: (e) => {console.error(e)},
           complete: () => console.info('complete')
         }
       );
