@@ -193,5 +193,8 @@ if __name__ == '__main__':
 		print((f'{sys.argv[0]}: Serial port should be given. Websocket port can be given\n'
 			f'Example:\n'
 			f'{sys.argv[0]} COM10 12345\n'
-			f'If no websocket port is given, default value port number 12345 will be used.'
+			f'If no websocket port is given, default value port number 12345 will be used.\n'
+			f'Available serial ports:'
 		) ,file=sys.stderr)
+		for p in sorted(serialwrapper.listport()):
+				print(f'{p.device}: {p.description}')

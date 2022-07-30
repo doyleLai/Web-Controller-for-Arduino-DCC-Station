@@ -1,7 +1,7 @@
 import queue
-from tkinter.messagebox import NO
-from typing import Callable
+from typing import Callable, List
 import serial as s
+import serial.tools.list_ports
 import time
 import threading
 
@@ -77,3 +77,6 @@ class Serial():
 			except Exception as e:
 				print("Unknown exception when writing to COM.", e)
 		self.ser.close()
+
+def listport() -> List:
+	return serial.tools.list_ports.comports()

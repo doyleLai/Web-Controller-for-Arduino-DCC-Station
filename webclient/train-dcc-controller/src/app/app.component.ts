@@ -25,7 +25,7 @@ export class AppComponent {
   }
 
   add():void{
-    if (this.addLocoTextfieldValue){
+    if (this.addLocoTextfieldValue && this.addLocoTextfieldValue < 10 && this.addLocoTextfieldValue > 0){
       this.locoService.send(this.asm_websocket_message("addLoco",{"address":this.addLocoTextfieldValue}));
     }
   }
