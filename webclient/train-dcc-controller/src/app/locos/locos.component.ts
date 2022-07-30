@@ -70,13 +70,18 @@ export class LocosComponent implements OnInit {
 
   updateExistLoco(locoData:Loco):void{
     let _address = locoData.address;
+    let isFound = false;
     for (let i = 0; i < this.locos.length; i++){
       if (this.locos[i].address == _address){
+        isFound = true;
         Object.assign( this.locos[i], locoData)
         //this.locos[i].address = locoData.address;
         //this.locos[i].dir = locoData.dir;
         //this.locos[i].speed = locoData.speed;
       }
+    }
+    if (!isFound){
+      this.locos.push(locoData)
     }
   }
 

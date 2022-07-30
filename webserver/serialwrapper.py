@@ -1,4 +1,6 @@
 import queue
+from tkinter.messagebox import NO
+from typing import Callable
 import serial as s
 import time
 import threading
@@ -8,8 +10,9 @@ class Serial():
 	buadrate:int = None
 	bufferread:queue.Queue = queue.Queue()
 	bufferwrite:queue.Queue = queue.Queue()
+	readHandler:Callable[[str], None] = None
 	ser:s.Serial = s.Serial()
-	entry:threading.Lock 
+	entry:threading.Lock
 	isRunning:bool = None
 
 	def __init__(self, port:str, buadrate:int):
@@ -45,7 +48,10 @@ class Serial():
 			try:
 				if self.ser.is_open:
 					line = str(self.ser.readline().decode('utf-8').strip())
-					print(f'COM Read: {line}')
+					if self.readHandler != None:
+						self.readHandler(line)
+					else:
+						print(f'COM Read: {line}')
 				else:
 					self.reconnect()
 			except s.SerialException as e:

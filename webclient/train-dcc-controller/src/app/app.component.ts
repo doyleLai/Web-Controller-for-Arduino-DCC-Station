@@ -9,6 +9,7 @@ import { LocoService } from './loco.service';
 export class AppComponent {
   title = 'train-dcc-controller';
   websocketIsConnected:boolean = false;
+  addLocoTextfieldValue = null;
 
   constructor(private locoService: LocoService){
   }
@@ -23,7 +24,22 @@ export class AppComponent {
     );
   }
 
+  add():void{
+    if (this.addLocoTextfieldValue){
+      this.locoService.send(this.asm_websocket_message("addLoco",{"address":this.addLocoTextfieldValue}));
+    }
+  }
+
+  requestReset():void{
+    this.locoService.send(this.asm_websocket_message("reset",{}));
+  }
+
   reloadPage():void {
     window.location.reload();
+  }
+
+  asm_websocket_message(type:string, data:object): string{
+    return JSON.stringify({"type": type, "data": data})
+
   }
 }

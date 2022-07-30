@@ -2,7 +2,13 @@
     <div class="headBarContainer">
         <h2>DCC Command Panel</h2>
 
-        <div class="connectionStatus"><button (click)="reloadPage()">Reload</button>{{websocketIsConnected? "Connected":"No Connection"}}</div>
+        <div class="connectionStatus">
+            <input type="number" placeholder="addr" [(ngModel)]="addLocoTextfieldValue">
+            <button (click)="add()">Add decoder</button>
+            <button (click)="requestReset()">Reset</button>
+            <button (click)="reloadPage()">Reload</button>
+            {{websocketIsConnected? "Connected":"No Connection"}}
+        </div>
     </div>
     <app-locos></app-locos>
 </div>
