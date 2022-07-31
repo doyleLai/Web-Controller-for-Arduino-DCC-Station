@@ -1,8 +1,6 @@
 import json
 from typing import Any
 
-from sqlalchemy import false
-
 class Loco():
 	def __init__(self, address:int) -> None:
 		self.address = address
