@@ -1,5 +1,10 @@
 # Web-Controller-for-Arduino-DCC-Station
-## Preliminary design of websocket message format and protocol
+
+## Required Python Modules
+- pySerial: `python -m pip install pyserial`
+- Websocket Server: `pip install websocket-server`
+
+## Websocket message format and protocol
 The socket server store the status of locos and broadcast the status to all clients periodically (maybe once every 5 sec). After receiving a change request from a client, the server broadcast the new state of that loco to all clients immediately.
 
 ### To server
