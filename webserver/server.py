@@ -46,7 +46,7 @@ def signal_handler(signum, frame):
 	raise ProgramInterrupted
 
 
-def main(host:str = "", port:int = 12345, serialport:str = "COM9"):
+def main(serialport:str = None, host:str = "", port:int = 12345):
 	print("Service started")
 	
 	locoController = LocosController()
@@ -58,20 +58,6 @@ def main(host:str = "", port:int = 12345, serialport:str = "COM9"):
 	#ss:socketwrapper.Socket
 	serial:serialwrapper.Serial
 
-	def socketread(client, server, read) -> None:
-		#print("socketread:", read)
-		websocket_msg_handler.handle(client, server, read)
-		"""
-		ws.send_message(client, "ok")
-		commendparts = read.strip().split(" ")
-		msg = ""
-		if commendparts[0] == 'S':
-			msg = messagebuilder.speedcontrol(int(commendparts[1]), int(commendparts[2]), int(commendparts[3]))
-		if commendparts[0] == 'F':
-			msg = messagebuilder.functioncontrol(int(commendparts[1]), int(commendparts[2]), bool(int(commendparts[3])))
-		print(msg)
-		com.bufferwrite.put(msg)
-		"""
 	# ========================================
 	# Helper functions used in other functions
 	# ========================================
@@ -93,6 +79,9 @@ def main(host:str = "", port:int = 12345, serialport:str = "COM9"):
 	# ======================
 	# Handlers for websocket
 	# ======================
+	
+	def socketread(client, server, read) -> None:
+		websocket_msg_handler.handle(client, server, read)
 
 	def ws_addLoco(clinet, server, data):
 		if "address" in data:
@@ -146,6 +135,7 @@ def main(host:str = "", port:int = 12345, serialport:str = "COM9"):
 	# Handlers for serial port
 	# ========================
 
+
 	def serial_read(line:str):
 		if line == "DCC_begin":
 			print(line)
@@ -164,10 +154,14 @@ def main(host:str = "", port:int = 12345, serialport:str = "COM9"):
 		else:
 			print(line)
 	
+	def serialPortVerification(msg:str) -> bool:
+		return msg == "DCC_begin"
+
 	ws= WebsocketServer(host=host, port=port)
 	ws.set_fn_message_received(socketread)
 	#ss = socketwrapper.Socket("", 12345, callback_read = socketread)
-	serial = serialwrapper.Serial(serialport, 9600)
+	#serial = serialwrapper.Serial(serialport, 9600)
+	serial = serialwrapper.Serial(verificationFunc=serialPortVerification)
 	serial.readHandler = serial_read
 	print(f'Websocket listening on {host}:{port}')
 	ws.run_forever(True)
@@ -185,6 +179,8 @@ def main(host:str = "", port:int = 12345, serialport:str = "COM9"):
 	#s.close()
  
 if __name__ == '__main__':
+	main()
+	"""
 	if len(sys.argv) == 2:
 		main(serialport = sys.argv[1])
 	elif len(sys.argv) == 3:
@@ -198,3 +194,4 @@ if __name__ == '__main__':
 		) ,file=sys.stderr)
 		for p in sorted(serialwrapper.listport()):
 				print(f'{p.device}: {p.description}')
+	"""

@@ -1,6 +1,6 @@
 import queue
 from typing import Callable, List
-import serial as s
+import serial
 import serial.tools.list_ports
 import time
 import threading
@@ -8,38 +8,61 @@ import threading
 class Serial():
 	port:str = None
 	buadrate:int = None
+	serialPortVerification:Callable[[str],bool] = None
 	bufferread:queue.Queue = queue.Queue()
 	bufferwrite:queue.Queue = queue.Queue()
 	readHandler:Callable[[str], None] = None
-	ser:s.Serial = s.Serial()
+	ser:serial.Serial = serial.Serial()
 	entry:threading.Lock
 	isRunning:bool = None
 
-	def __init__(self, port:str, buadrate:int):
+	def __init__(self, port:str = None, buadrate:int = None, verificationFunc:Callable[[str],bool] = None):
 		self.port = port
 		self.buadrate = buadrate
+		self.serialPortVerification = verificationFunc
 		self.connect()
+		self.entry = threading.Lock()
 		threadread = threading.Thread(target=self.worker_read, daemon=True).start()
 		threadwrite = threading.Thread(target=self.worker_write, daemon=True).start()
-		self.entry = threading.Lock()
-	
+
 	def connect(self):
-		print(f'Connecting to {self.port}...')
-		self.ser = s.Serial(self.port, self.buadrate)
-		print(f'Connected to {self.port}')
+		if self.port and self.buadrate:
+			print(f'Connecting to {self.port}...')
+			self.ser = serial.Serial(self.port, self.buadrate)
+			print(f'Connected to {self.port}')
+			#self.isRunning = True
+		else:
+			print("Searching for serial device...")
+			s:serial.Serial = findPort(self.serialPortVerification)
+			if s:
+				self.ser = s
+				self.ser.open()
+				print(f'Connected to {s.port}')
+				#self.isRunning = True
+			else:
+				print("Device not found")
 		self.isRunning = True
 
 	def reconnect(self):
 		self.entry.acquire()
+		time.sleep(2)
 		try:
 			if self.ser.is_open:
 				print("isopen")
-			else:
+			elif self.port and self.buadrate:
 				print(f'Reconnecting to {self.port}...')
-				time.sleep(2)
-				self.ser = s.Serial(self.port, self.buadrate)
+				self.ser = serial.Serial(self.port, self.buadrate)
 				print(f'Connected to {self.port}')
-				time.sleep(2)
+			else:
+				print("Searching for serial device...")
+				s:serial.Serial = findPort(self.serialPortVerification)
+				if s:
+					self.ser = s
+					self.ser.open()
+					print(f'Connected to {s.port}')
+					self.isRunning = True
+				else:
+					print("Device not found")
 		finally:
 			self.entry.release()
 
@@ -54,10 +77,9 @@ class Serial():
 						print(f'COM Read: {line}')
 				else:
 					self.reconnect()
-			except s.SerialException as e:
+			except serial.SerialException as e:
 				print("An exception occurred when connecting COM:", e)
 				self.ser.close()
-				time.sleep(2)
 			except Exception as e:
 				print("Unknown exception when reading from COM.", e)
 		self.ser.close()
@@ -70,13 +92,28 @@ class Serial():
 						self.ser.write(bytes(self.bufferwrite.get(), encoding='ascii'))
 				else:
 					self.reconnect()
-			except s.SerialException as e:
+			except serial.SerialException as e:
 				print("An exception occurred when connecting COM:", e)
 				self.ser.close()
-				time.sleep(2)
 			except Exception as e:
 				print("Unknown exception when writing to COM.", e)
 		self.ser.close()
 
 def listport() -> List:
 	return serial.tools.list_ports.comports()
+
+def findPort(verificationFunction) -> serial.Serial:
+	ports = serial.tools.list_ports.comports()
+	for port in ports:
+		try:
+			s:serial.Serial = serial.Serial(port.device, 9600 ,timeout=2)
+			line = ""
+			if s.is_open:
+				line = str(s.readline().decode('utf-8').strip())
+			s.close()
+			if verificationFunction(line):
+				s.timeout = None
+				return s
+		except (OSError, serial.SerialException):
+			pass
+	return None
