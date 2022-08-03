@@ -15,6 +15,8 @@ class Serial():
 	ser:serial.Serial = serial.Serial()
 	entry:threading.Lock
 	isRunning:bool = None
+	threadread:threading.Thread
+	threadwrite:threading.Thread
 
 	def __init__(self, port:str = None, buadrate:int = None, verificationFunc:Callable[[str],bool] = None):
 		self.port = port
@@ -22,8 +24,10 @@ class Serial():
 		self.serialPortVerification = verificationFunc
 		self.connect()
 		self.entry = threading.Lock()
-		threadread = threading.Thread(target=self.worker_read, daemon=True).start()
-		threadwrite = threading.Thread(target=self.worker_write, daemon=True).start()
+		self.threadread = threading.Thread(target=self.worker_read)
+		self.threadread.start()
+		self.threadwrite = threading.Thread(target=self.worker_write)
+		self.threadwrite.start()
 
 	def connect(self):
 		if self.port and self.buadrate:
@@ -65,6 +69,11 @@ class Serial():
 					print("Device not found")
 		finally:
 			self.entry.release()
+
+	def close(self):
+		self.isRunning = False
+		self.threadread.join()
+		self.threadwrite.join()
 
 	def worker_read(self):
 		while self.isRunning:

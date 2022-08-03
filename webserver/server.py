@@ -1,6 +1,7 @@
 import sys
 import json
 import signal
+from time import sleep
 #import socket
 # import socket programming library
 #import socketwrapper
@@ -170,10 +171,14 @@ def main(serialport:str = None, host:str = "", port:int = 12345):
 
 	try:
 		while True:
-			line = input("> ")
-			serial.bufferwrite.put(line)
+			if __name__ ==  '__main__':
+				line = input("> ")
+				serial.bufferwrite.put(line)
+			else:
+				sleep(1)
 	except ProgramInterrupted:
-		pass
+		serial.close()
+		ws.shutdown()
 		#for x in threadslist:
 	#		x.join()
 	#s.close()
