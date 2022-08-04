@@ -97,10 +97,12 @@ class Serial():
 		while self.isRunning:
 			try:
 				if self.ser.is_open:
-					if self.bufferwrite.qsize():
-						self.ser.write(bytes(self.bufferwrite.get(), encoding='ascii'))
+					#if self.bufferwrite.qsize():
+					self.ser.write(bytes(self.bufferwrite.get(timeout=1), encoding='ascii'))
 				else:
 					self.reconnect()
+			except queue.Empty as e:
+				pass
 			except serial.SerialException as e:
 				print("An exception occurred when connecting COM:", e)
 				self.ser.close()
