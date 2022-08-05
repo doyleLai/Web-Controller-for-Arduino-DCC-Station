@@ -4,12 +4,12 @@ import server
 import frontend_server
 import signal
 
-#class ProgramInterrupted(Exception):
-#	pass
+class ProgramInterrupted(Exception):
+	pass
 
 def signal_handler(signum, frame):
 	print(f'Signal {signum} received')
-	#raise ProgramInterrupted
+	raise ProgramInterrupted
 
 def info(title):
 	print(title)
@@ -27,6 +27,11 @@ if __name__ == '__main__':
 	p2 = Process(target=frontend_server.main, args=(), daemon=True)
 	p1.start()
 	p2.start()
-	p1.join()
+	try:
+		p1.join()
+	except ProgramInterrupted as e:
+		print("Terminating process")
+		p1.terminate()
+		p2.terminate()
 	#p2.join()
 	print("Web controller terminated")
