@@ -1,7 +1,7 @@
 # Web-Controller-for-Arduino-DCC-Station
 
 ## Required Python Modules
-- pySerial: `python -m pip install pyserial`
+- pySerial: `pip install pyserial`
 - Websocket Server: `pip install websocket-server`
 
 ## Websocket message format and protocol
