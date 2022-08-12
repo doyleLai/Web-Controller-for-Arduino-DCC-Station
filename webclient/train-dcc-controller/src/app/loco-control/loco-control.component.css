@@ -1,3 +1,8 @@
+label{
+    font-size:smaller;
+    display: block;
+}
+
 .locoControlContainer{
     margin-bottom: 50px;
 }
@@ -12,55 +17,66 @@
     display: inline-block;
     width: 150px;
     vertical-align:top;
+    margin-bottom: 15px;
 }
 
-.directionControlContainer label{
-    font-size:smaller;
-    display: block;
+.buttonToggleGroup{
+    display:flex;
+    margin: 5px 0px 0px 0px;
 }
 
-.directionControlContainer input{
+.buttonToggleGroup button{
     display: inline-block;
+    border: 1px solid gray;
+    width: 50px;
+    height: 40px;
+    color: white;
+    text-align: center;
+    background-color:gray;
+    box-sizing: border-box;
+    padding: 0px;
+    font-size: 15px;
+    cursor: pointer;
+    user-select: none;
+    vertical-align:middle;
 }
 
-.directionControlContainer output{
-    display: inline-block;
+.buttonToggleGroup .isOn{
+    background-color:rgb(48, 179, 221);
 }
 
 .speedControlContainer{
     display: inline-block;
-    width: 250px;
+    width: 600px;
     vertical-align:top;
-}
-
-.speedControlContainer label{
-    font-size:smaller;
-    display: block;
 }
 
 .speedControlContainer input[type="range"]{
     display: inline-block;
     width: 200px;
-    margin: 10px 5px 10px 0px;
+    margin: 5px 5px 0px 0px;
     vertical-align:middle;
+    height: 40px;
 }
 
 .speedControlContainer output{
     display: inline-block;
-
+    width: 40px;
+    line-height: 40px;
+    text-align: center;
+    margin: 5px 5px 0 5px;
     vertical-align:middle;
 }
 
-ul.locoFunctionControlContainer{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 100%;
+.speedControlContainer .locoSpeedStepControl{
+    display: inline-block;
     padding: 0px;
+    margin: 0px;
     color: white;
+    vertical-align:middle;
 }
 
-ul.locoFunctionControlContainer li{
+.speedControlContainer .locoSpeedStepControl li{
     display: inline-block;
     list-style: none;
     width: 40px;
@@ -69,18 +85,55 @@ ul.locoFunctionControlContainer li{
     text-align: center;
     background-color:gray;
     box-sizing: border-box;
-    margin-right: 10px;
+    margin: 5px 5px 0px 5px;
     padding: 0px;
+    font-size: 15px;
+    cursor: pointer;
+    user-select: none;
+    vertical-align:middle;
+}
+
+.speedControlContainer .locoSpeedStepControl li.eb{
+    background-color:rgb(255, 51, 0);
+}
+
+.speedControlContainer .locoSpeedStepControl li:hover{
+    background-color:rgb(170, 170, 170);
+}
+
+.speedControlContainer .locoSpeedStepControl li:active{
+    background-color:rgb(48, 179, 221);
+}
+
+.penalLabel{
+    font-size:smaller;
+}
+
+ul.locoFunctionControlContainer{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 10px;
+    padding: 0px;
+    margin-top: 5px;
+    color: white;
+}
+
+ul.locoFunctionControlContainer li{
+    list-style: none;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    background-color:gray;
+    box-sizing: border-box;
     font-size: 15px;
     cursor: pointer;
 }
 
 ul.locoFunctionControlContainer li:hover{
     background-color:rgb(170, 170, 170);
-}
-
-ul.locoFunctionControlContainer li:first-child{
-    padding-left: 0px;
 }
 
 ul.locoFunctionControlContainer li.isFuncOn{
@@ -90,3 +143,4 @@ ul.locoFunctionControlContainer li.isFuncOn{
 ul.locoFunctionControlContainer li.isFuncOn:hover{
     background-color:rgb(96, 215, 255);
 }
+

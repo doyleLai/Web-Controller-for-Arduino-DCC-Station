@@ -1,18 +1,29 @@
 <div class="locoControlContainer" *ngIf="loco">
     <div class="addressText">0x{{loco.address | number:'2.0-0'}}</div>
-    <div class="directionControlContainer">
+    <div class="directionControlContainer custom-mat-button-toggle-group">
         <label for="dir{{loco.address}}">Direction</label>
-        <input id="dir{{loco.address}}"
-        type="checkbox" [(ngModel)]="loco.dir" min="0" max="1"
-        (change)="speedOnChanged(loco.address, loco.dir, loco.speed)"> 
-        <output>{{loco.dir? "Up":"Dn"}}</output>
+        <div class="buttonToggleGroup">
+            <button [class.isOn]="loco.dir === true" type="button" (click)="directionButtonClick(loco, true)">Up</button>
+            <button [class.isOn]="loco.dir === false" type="button"(click)="directionButtonClick(loco, false)">Dn</button>
+        </div>
     </div>
+
     <div class="speedControlContainer">
         <label >Speed</label>
         <input type="range" [(ngModel)]="loco.speed" min="0" max="127"
         (change)="speedOnChanged(loco.address, loco.dir, loco.speed)">
         <output>{{loco.speed}}</output>
+        <ul class="locoSpeedStepControl">
+            <li (click) = "speedStepperButtonClick(loco, -10)">-10</li>
+            <li (click) = "speedStepperButtonClick(loco, -2)">-2</li>
+            <li (click) = "speedOnChanged(loco.address, loco.dir, 0)">0</li>
+            <li (click) = "speedStepperButtonClick(loco, 2)">+2</li>
+            <li (click) = "speedStepperButtonClick(loco, 10)">+10</li>
+            <li class="eb" (click) = "speedOnChanged(loco.address, loco.dir, 1)">EB</li>
+        </ul>
     </div>
+
+    <div class="penalLabel">Functions</div>
     <ul class="locoFunctionControlContainer">
         <li *ngFor="let func of loco.func" 
         [class.isFuncOn]="func.isOn === true"

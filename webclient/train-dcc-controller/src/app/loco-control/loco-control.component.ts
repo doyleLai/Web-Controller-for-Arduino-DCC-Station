@@ -15,7 +15,18 @@ export class LocoControlComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  directionButtonClick(loco:Loco, dir:boolean){
+    //if (loco.dir!=dir){
+      this.locoService.send(this.asm_message_c_speed(loco.address, dir, loco.speed));
+    //}
+  }
 
+  speedStepperButtonClick(loco:Loco, change:number){
+    let targetSpeed = loco.speed + change;
+    targetSpeed = (targetSpeed < 0)? 0:targetSpeed;
+    targetSpeed = (targetSpeed > 127)? 127:targetSpeed;
+    this.locoService.send(this.asm_message_c_speed(loco.address, loco.dir, targetSpeed));
+  }
   speedOnChanged(address:number, direction:boolean, speed:number):void{
     this.locoService.send(this.asm_message_c_speed(address, direction, speed));
   }

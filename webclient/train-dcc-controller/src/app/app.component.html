@@ -1,13 +1,14 @@
 <div class="pageConainer">
     <div class="headBarContainer">
         <h2>DCC Command Panel</h2>
-
-        <div class="connectionStatus">
+        <div class="headBarControlPanel">
             <input type="number" min="1" max="9" step="1" placeholder="addr" [(ngModel)]="addLocoTextfieldValue">
             <button (click)="add()">Add decoder</button>
             <button (click)="requestReset()">Reset</button>
             <button (click)="reloadPage()">Reload</button>
+            <div class="connectionStatusLabel">
             {{websocketIsConnected? "Connected":"No Connection"}}
+            </div>
         </div>
     </div>
     <app-locos></app-locos>
