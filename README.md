@@ -1,4 +1,4 @@
-# Web-Controller-for-Arduino-DCC-Station
+# Web-Controller-for-Arduino-DCC-Station (I do not have time to write the readme, stay tuned)
 
 ## Required Python Modules
 - pySerial: `pip install pyserial`
