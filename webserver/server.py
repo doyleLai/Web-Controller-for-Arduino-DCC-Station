@@ -47,7 +47,7 @@ def signal_handler(signum, frame):
 	raise ProgramInterrupted
 
 
-def main(serialport:str = None, host:str = "", port:int = 12345):
+def main(serialport:str = None, baudrate:int = None, host:str = "", port:int = 12345):
 	print("Service started")
 	
 	locoController = LocosController()
@@ -160,14 +160,14 @@ def main(serialport:str = None, host:str = "", port:int = 12345):
 
 	ws= WebsocketServer(host=host, port=port)
 	ws.set_fn_message_received(socketread)
-	#ss = socketwrapper.Socket("", 12345, callback_read = socketread)
-	#serial = serialwrapper.Serial(serialport, 9600)
-	serial = serialwrapper.Serial(verificationFunc=serialPortVerification)
-	serial.readHandler = serial_read
 	print(f'Websocket listening on {host}:{port}')
 	ws.run_forever(True)
 	# a forever loop until client wants to exit
-
+	#ss = socketwrapper.Socket("", 12345, callback_read = socketread)
+	#serial = serialwrapper.Serial(serialport, 9600)
+	serial = serialwrapper.Serial(port=serialport,buadrate=baudrate, verificationFunc=serialPortVerification)
+	serial.readHandler = serial_read
+	serial.bufferwrite.put("<W>") # send a reset command to DCC station
 
 	try:
 		while True:
