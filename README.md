@@ -15,7 +15,7 @@ I do not have time to write this documentation. No detailed technical informatio
 1. Keep the USB cable connected to the Arduino Board
 1. Download and unzip this project.
 1. Go to the `webserver` folder
-1. Run: `python webcontroller.py`
+1. Run `python webcontroller.py`. <BR>If you are running it on a Raspberry Pi and connecting the Arduino via its GPIO's serial (Not USB port), after enabling the hardware serial, run `python webcontroller.py /dev/ttyS0 9600`
 1. In the console, note which port the HTTP is serving at.<BR>![Alt text](1.png)
 
 1. Open a web browser, go to `127.0.0.1:xxxx` (where `xxxx` is the port number shown in the console).<BR>
